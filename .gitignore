@@ -6,6 +6,7 @@ target/
 #user interface - angular files
 !**/src/main/ui/
 
+
 ### STS ###
 .apt_generated
 .classpath
