@@ -1,6 +1,6 @@
 [![CircleCI](https://circleci.com/gh/Bodziers/passwordApp/tree/main.svg?style=shield)](https://circleci.com/gh/Bodziers/passwordApp/tree/main)
 <div> 
-    <h1>Simple REST application to generate password</h1>
+    <h1>Simple REST application to generate passwords</h1>
         <p>Combination of:</p>
         <ul>
             <li>letters.</li>
