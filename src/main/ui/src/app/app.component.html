@@ -1,56 +1,99 @@
-<div class="container pt-5">
-  <div class="d-flex justify-content-center align-items-center pt-5">
-    <div class="">
-      <div class="text-center">
-        <img
-          class="mb-4"
-          src="https://mdbootstrap.com/img/logo/mdb-transparent-250px.png"
-          style="width: 180px"
-        />
+<app-header></app-header>
+<main class="bg-light">
+  <div class="container">
+    <div class="row my-3">
+      <div class="col-md-9">
+        <div class="card border border-primary shadow-0 ">
+          <div class="card-body">
+            <h5 class="card-title">Passwords</h5>
+            <div class="table-responsive">
+              <table class="table table-hover text-center">
+                <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Password</th>
+                  <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Sit</td>
+                  <td>
+                      <button type="button" class="btn btn-outline-primary btn-rounded btn-sm" data-mdb-ripple-color="#000000"> copy <i class="fas fa-download ms-1"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Adipisicing</td>
+                  <td>
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-sm" data-mdb-ripple-color="#000000"> copy <i class="fas fa-download ms-1"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>Hic</td>
+                  <td>
+                    <button type="button" class="btn btn-outline-primary btn-rounded btn-sm" data-mdb-ripple-color="#000000"> copy <i class="fas fa-download ms-1"></i></button>
+                  </td>
+                </tr>
+                </tbody>
+                <caption>
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                      </li>
+                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                      <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                      <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </caption>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
-      <h5 class="mb-3">This is MDB</h5>
+      <div class="col-md-3">
+        <div class="card border border-primary shadow-0 ">
+          <div class="card-body mx-3">
+            <h5 class="card-title">Settings</h5>
 
-      <p>
-        We hope it exceeds your expectations.<br />
-        1. Please report all bugs on our
-        <a href="https://mdbootstrap.com/support/cat/angular/">support forum</a
-        ><br />
-        2. Help us improve with a
-        <a href="https://forms.gle/RDgpTr9z5SAx2Y5w9"
-          >4 minute feedback survey</a
-        ><br />
-        3. Access MDB GO for
-        <a href="https://mdbootstrap.com/docs/standard/cli/"
-          >free hosting & deployment</a
-        ><br />
-      </p>
-      <p>
-        Keep coding,<br />
-        MDB Team
-      </p>
-      <hr />
-      <a
-        class="btn btn-primary btn-lg btn-block"
-        href="https://mdbootstrap.com/docs/standard/getting-started/"
-        target="_blank"
-        role="button"
-        >Start with MDB tutorials</a
-      >
-      <a
-        class="btn btn-primary btn-lg btn-block"
-        href="https://mdbootstrap.com/docs/standard/cli/"
-        target="_blank"
-        role="button"
-        >Start with backend template</a
-      >
-      <p class="mt-3 text-center mb-0">PS. Free users get PRO cheaper</p>
-      <a
-        class="btn btn-danger btn-lg btn-block"
-        href="https://mdbootstrap.com/sale/unique/"
-        target="_blank"
-        role="button"
-        >UPGRADE WITH DISCOUNT</a
-      >
+                  <input type="number" id="typeNumber" class="form-control" />
+                  <label class="form-label" for="typeNumber">Number of digits</label>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="lettersCheck" />
+                  <label class="form-check-label" for="lettersCheck">Letters</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="digitsCheck"/>
+                  <label class="form-check-label" for="digitsCheck">Digits</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="specialSignsCheck" />
+                  <label class="form-check-label" for="specialSignsCheck">Special signs</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="wordsCheck" disabled />
+                  <label class="form-check-label" for="wordsCheck">Words</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="allCheck"/>
+                  <label class="form-check-label" for="allCheck">Select all options</label>
+                </div>
+            <button type="button" class="btn btn-primary mt-2">Generate passwords</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</main>
