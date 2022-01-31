@@ -49,7 +49,6 @@ export class SelectionFormComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.settings.value);
     this.reqPasswords();
   }
 

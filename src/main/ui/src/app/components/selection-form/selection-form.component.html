@@ -1,10 +1,10 @@
-<div class="card border border-primary shadow-0 ">
+<div class="card border border-primary shadow-2 ">
   <div class="card-body mx-3">
     <form class="selector-section" [formGroup]="settings" (ngSubmit)="onSubmit()">
       <h5 class="card-title">Settings</h5>
       <mdb-form-control class="mb-4">
         <input mdbValidate mdbInput type="number" id="noOfDigits" class="form-control" required formControlName="noOfDigits" />
-        <label class="form-label" for="noOfDigits">Number of digits</label>
+        <label mdbLabel class="form-label" for="noOfDigits">Number of digits</label>
         <mdb-error *ngIf="noOfDigits?.invalid && (noOfDigits?.dirty || noOfDigits?.touched)">Number of digits is required</mdb-error>
         <mdb-success *ngIf="noOfDigits?.valid && (noOfDigits?.dirty || noOfDigits?.touched)"></mdb-success>
       </mdb-form-control>

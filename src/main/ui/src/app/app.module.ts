@@ -25,7 +25,7 @@ import { HeaderComponent } from './header/header.component';
 import {PasswordService} from "./service/password.service";
 import { PasswordsListComponent } from './components/passwords-list/passwords-list.component';
 import { SelectionFormComponent } from './components/selection-form/selection-form.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -54,6 +54,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     MDBBootstrapModule.forRoot(),
     ReactiveFormsModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [PasswordService],
   bootstrap: [AppComponent],
