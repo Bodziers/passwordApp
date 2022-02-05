@@ -3,10 +3,14 @@ package pl.finmatik.passwordapp.service;
 import org.springframework.stereotype.Service;
 import pl.finmatik.passwordapp.model.Password;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -176,5 +180,40 @@ public class PasswordServiceImpl implements PasswordService {
             }
         }
         return password.toString();
+    }
+
+    @Override
+    public String generateRandomWords() {
+
+         /* 1. random line (77722 lines in words_us)
+         * 2. query selected line
+         * 3. read word
+         * 4. check how many signs it has
+         * 5. check how many signs left, if less than 4 search for word with 4 characters
+         * 6. generate password
+         */
+        try {
+            String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+            long randomNo;
+            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+                file.length();
+                randomNo = random.nextLong(file.length());
+            }
+            return readLineFromFile(filePath, randomNo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String readLineFromFile(String filePath, long seek) throws IOException {
+        String line;
+        try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+            file.length();
+            file.seek(seek);
+            file.readLine();
+            line = file.readLine();
+        }
+        return line;
     }
 }

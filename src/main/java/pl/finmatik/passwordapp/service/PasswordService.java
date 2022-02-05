@@ -11,7 +11,6 @@ public interface PasswordService {
     public String generateRandomLettersAndDigits(int noOfDigits);
     public String generateRandomLettersWithSpecialChars(int noOfDigits);
     public String generateRandomDigitsWithSpecialChars(int noOfDigits);
+    public String generateRandomWords();
     public List<Password> generateRandomPassword(int noOfDigits, boolean letters, boolean digits, boolean specialSigns);
-
-
 }

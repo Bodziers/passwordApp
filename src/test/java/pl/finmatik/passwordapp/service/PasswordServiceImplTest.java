@@ -5,9 +5,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.finmatik.passwordapp.model.Password;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class PasswordServiceImplTest {
     PasswordServiceImpl passwordServiceImpl;
@@ -96,5 +99,45 @@ class PasswordServiceImplTest {
         List<Password> passwordsList= passwordServiceImpl.generateRandomPassword(noOfDigits,letters,digits,specialSign);
         //then
         assertEquals(sizeOfList,passwordsList.size());
+    }
+
+    @Test
+    @DisplayName("Should find first line from txt file")
+    void getFirstLineFromDictionaryFileTest() throws Exception {
+        //given
+        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        //when
+        String word = passwordServiceImpl.readLineFromFile(filePath, 0);
+        //then
+        assertEquals("a", word);
+    }
+
+    @Test
+    @DisplayName("Should find last line from txt file")
+    void getLastLineFromDictionaryFileTest() throws Exception {
+        //given
+        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        long filesize = 0;
+        try {
+            RandomAccessFile file = new RandomAccessFile(filePath, "r");
+            filesize = file.length();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //when
+        String word = passwordServiceImpl.readLineFromFile(filePath, filesize-8);
+        //then
+        assertEquals("poque", word);
+    }
+
+    @Test
+    @DisplayName("Should find random word from txt file")
+    void getRandomWordFromDictionaryFileTest() throws Exception {
+        //given
+        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        //when
+        String word = passwordServiceImpl.generateRandomWords();
+        //then
+        assertNotNull(word);
     }
 }
