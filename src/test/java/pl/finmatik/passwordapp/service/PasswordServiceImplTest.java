@@ -131,13 +131,23 @@ class PasswordServiceImplTest {
     }
 
     @Test
-    @DisplayName("Should find random word from txt file")
-    void getRandomWordFromDictionaryFileTest() throws Exception {
+    @DisplayName("Should find random words from txt file")
+    void getRandomWordsFromDictionaryFileTest() throws Exception {
         //given
         String filePath = "src/main/resources/static/dictionary/words_usa.txt";
         //when
-        String word = passwordServiceImpl.generateRandomWords();
+        List<Password> words = passwordServiceImpl.generateRandomWords(2);
         //then
-        assertNotNull(word);
+        assertNotNull(words);
+    }
+    @Test
+    @DisplayName("Should find 10 random words from txt file")
+    void getTenRandomWordsFromDictionaryFileTest() throws Exception {
+        //given
+        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        //when
+        List<Password> words = passwordServiceImpl.generateRandomWords(10);
+        //then
+        assertEquals(10,words.size());
     }
 }

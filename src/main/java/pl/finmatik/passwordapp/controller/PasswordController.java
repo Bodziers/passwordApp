@@ -26,4 +26,11 @@ public class PasswordController {
         passwordList = passwordService.generateRandomPassword(chars, letters, digits, specialsigns);
         return ResponseEntity.ok(passwordList);
     }
+
+    @GetMapping("/word")
+    public ResponseEntity<List<Password>> getWords(@RequestParam int numberofwords) {
+        List<Password> passwordList;
+        passwordList = passwordService.generateRandomWords(numberofwords);
+        return ResponseEntity.ok(passwordList);
+    }
 }

@@ -3,14 +3,12 @@ package pl.finmatik.passwordapp.service;
 import org.springframework.stereotype.Service;
 import pl.finmatik.passwordapp.model.Password;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -33,7 +31,7 @@ public class PasswordServiceImpl implements PasswordService {
         } else {
 
             List<Password> passList = new ArrayList<>();
-            String pass = "";
+            String pass;
             long id;
 
             for (int i = 1; i < 11; i++) {
@@ -74,7 +72,7 @@ public class PasswordServiceImpl implements PasswordService {
                 i--;
             } else {
                 //add char to string
-                password.append(Character.toString ((char) randomNo));
+                password.append((char) randomNo);
             }
         }
         return password.toString();
@@ -90,7 +88,7 @@ public class PasswordServiceImpl implements PasswordService {
             if (randomNo <48) {
                 i--;
             } else {
-                password.append(Character.toString ((char) randomNo));
+                password.append((char) randomNo);
             }
         }
         return password.toString();
@@ -107,7 +105,7 @@ public class PasswordServiceImpl implements PasswordService {
             if (randomNo < 65 || (randomNo > 90 && randomNo <97)) {
                 i--;
             } else {
-                password.append(Character.toString ((char) randomNo));
+                password.append((char) randomNo);
             }
         }
         return password.toString();
@@ -129,7 +127,7 @@ public class PasswordServiceImpl implements PasswordService {
             } else if (randomNo > 90 && randomNo < 97) {
                 i--;
             } else {
-                password.append(Character.toString ((char) randomNo));
+                password.append((char) randomNo);
             }
         }
         return password.toString();
@@ -151,7 +149,7 @@ public class PasswordServiceImpl implements PasswordService {
             } else {
                 {
                     //add char to string
-                    password.append(Character.toString((char) randomNo));
+                    password.append((char) randomNo);
                 }
             }
         }
@@ -175,7 +173,7 @@ public class PasswordServiceImpl implements PasswordService {
             } else {
                 {
                     //add char to string
-                    password.append(Character.toString((char) randomNo));
+                    password.append((char) randomNo);
                 }
             }
         }
@@ -183,29 +181,43 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    public String generateRandomWords() {
+    public List<Password> generateRandomWords(int noOfWords) {
 
-         /* 1. random line (77722 lines in words_us)
-         * 2. query selected line
+         /*  1. random line (77722 lines in words_us)
+         * 2. query random line
          * 3. read word
-         * 4. check how many signs it has
-         * 5. check how many signs left, if less than 4 search for word with 4 characters
-         * 6. generate password
+         * 4. repeat until all words are received
+         * 5. make array off all needed words (10 password * number of selected words in password, max 50 words)
+         * 5. choose words from list and combine them with characters in password
+         * 6. return password
+         * 7. return list of all 10 passwords
          */
-        try {
-            String filePath = "src/main/resources/static/dictionary/words_usa.txt";
-            long randomNo;
-            try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
-                file.length();
-                randomNo = random.nextLong(file.length());
+
+        //should i use already made object password? or create words - same variables?
+        List<Password> words = new ArrayList<>();
+
+        for (int i=1; i<=noOfWords; i++){
+            try {
+                String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+                long randomNo;
+                try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+                    file.length();
+                    randomNo = random.nextLong(file.length());
+                }
+                Password word = new Password(((long) i), readLineFromFile(filePath, randomNo));
+                words.add(word);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            return readLineFromFile(filePath, randomNo);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
+        return words;
     }
 
+    /*
+    * Method to read line from file pointed to by filePath and starting from byte position in file
+    * pointed by seek long parameter. Firs line from seek position is read until end of line character "/n",
+    * second line is red in full length and return as string value.
+     */
     public String readLineFromFile(String filePath, long seek) throws IOException {
         String line;
         try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
