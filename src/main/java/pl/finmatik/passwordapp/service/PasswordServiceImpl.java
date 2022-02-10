@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class PasswordServiceImpl implements PasswordService {
 
     private static Random random = new Random();
-
+    private static final String dictionaryPath = "src/main/resources/dictionary/words_usa.txt";
     static {
         try {
             random = SecureRandom.getInstanceStrong();
@@ -39,6 +39,10 @@ public class PasswordServiceImpl implements PasswordService {
             List<Password> passList = new ArrayList<>();
             String pass;
             List<String> charactersList = new ArrayList<>();
+            //setting default value to number of words that allows to generate passwords
+            if (numberOfWords <1 || numberOfWords >4) {
+                numberOfWords=3;
+            }
             //new password generation method
             for (int i = 1; i < 11; i++) {
                 if (digits) {
@@ -98,13 +102,13 @@ public class PasswordServiceImpl implements PasswordService {
         List<String> words = new ArrayList<>();
         for (int i=1; i<=noOfWords; i++){
             try {
-                String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+
                 long randomNo;
-                try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+                try (RandomAccessFile file = new RandomAccessFile(dictionaryPath, "r")) {
                     file.length();
                     randomNo = random.nextLong(file.length());
                 }
-                String word = readLineFromFile(filePath, randomNo);
+                String word = readLineFromFile(dictionaryPath, randomNo);
                 words.add(word);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -132,13 +136,12 @@ public class PasswordServiceImpl implements PasswordService {
 
         for (int i=1; i<=noOfWords; i++){
             try {
-                String filePath = "src/main/resources/static/dictionary/words_usa.txt";
                 long randomNo;
-                try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+                try (RandomAccessFile file = new RandomAccessFile(dictionaryPath, "r")) {
                     file.length();
                     randomNo = random.nextLong(file.length());
                 }
-                words.add(readLineFromFile(filePath, randomNo));
+                words.add(readLineFromFile(dictionaryPath, randomNo));
             } catch (IOException e) {
                 e.printStackTrace();
             }

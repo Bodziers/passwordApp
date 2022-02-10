@@ -16,12 +16,17 @@ export class PasswordService {
   getPasswords(chars:number,
                letters: boolean,
                digits: boolean,
+               words: boolean,
+               numberofwords: number,
                specialsigns: boolean) :Observable<Password[]> {
+
 
     let params = new HttpParams()
       .set('chars', chars)
       .set('letters', letters)
       .set('digits', digits)
+      .set('words', words)
+      .set('numberofwords', numberofwords)
       .set('specialsigns', specialsigns);
     return this.http.get<Password[]>(this.passwordUrl, {params}).pipe(map(
       response => response));

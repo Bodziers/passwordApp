@@ -15,14 +15,17 @@ export class SelectionFormComponent implements OnInit {
   passwords: Password[] = [];
   //validationForm: FormGroup;
   noOfDigits = new FormControl();
+  noOfWords = new FormControl();
 
   constructor(fb: FormBuilder, private passService: PasswordService) {
     this.settings = fb.group({
       lettersCheck: false,
       digitsCheck: false,
       specialSignsCheck: false,
+      wordsCheck: false,
       allCheck: false,
-      noOfDigits: ['', [Validators.required, Validators.max(32)]]
+      noOfWords: ['', [Validators.required, Validators.min(1),Validators.max(4)]],
+      noOfDigits: ['', [Validators.required, Validators.min(1), Validators.max(32)]]
     });
   }
 
@@ -30,11 +33,13 @@ export class SelectionFormComponent implements OnInit {
     this.settings.controls['lettersCheck'].patchValue(true);
     this.settings.controls['digitsCheck'].patchValue(true);
     this.settings.controls['specialSignsCheck'].patchValue(true);
+    this.settings.controls['wordsCheck'].patchValue(true);
   }
 
   private allDeselected() {
     this.settings.controls['lettersCheck'].patchValue(false);
     this.settings.controls['digitsCheck'].patchValue(false);
+    this.settings.controls['wordsCheck'].patchValue(false);
     this.settings.controls['specialSignsCheck'].patchValue(false);
   }
 
@@ -57,6 +62,8 @@ export class SelectionFormComponent implements OnInit {
       this.settings.controls['noOfDigits'].value,
       this.settings.controls['lettersCheck'].value,
       this.settings.controls['digitsCheck'].value,
+      this.settings.controls['wordsCheck'].value,
+      this.settings.controls['noOfWords'].value,
       this.settings.controls['specialSignsCheck'].value).subscribe(data => {
       this.passwords = data;
       this.passService.updateData(this.passwords);

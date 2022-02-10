@@ -97,18 +97,18 @@ class PasswordServiceImplTest {
     @DisplayName("Should find first line from txt file")
     void getFirstLineFromDictionaryFileTest() throws Exception {
         //given
-        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        String filePath = "src/main/resources/dictionary/words_usa.txt";
         //when
         String word = passwordServiceImpl.readLineFromFile(filePath, 0);
         //then
-        assertEquals("a", word);
+        assertEquals("aardvark", word);
     }
 
     @Test
     @DisplayName("Should find last line from txt file")
     void getLastLineFromDictionaryFileTest() throws Exception {
         //given
-        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        String filePath = "src/main/resources/dictionary/words_usa.txt";
         long filesize = 0;
         try {
             RandomAccessFile file = new RandomAccessFile(filePath, "r");
@@ -119,14 +119,14 @@ class PasswordServiceImplTest {
         //when
         String word = passwordServiceImpl.readLineFromFile(filePath, filesize-8);
         //then
-        assertEquals("poque", word);
+        assertEquals("opoque", word);
     }
 
     @Test
     @DisplayName("Should find random words from txt file")
     void getRandomWordsFromDictionaryFileNotNullTest() throws Exception {
         //given
-        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        String filePath = "src/main/resources/dictionary/words_usa.txt";
         //when
         List<String> words = passwordServiceImpl.generateRandomWords(2);
         //then
@@ -136,7 +136,7 @@ class PasswordServiceImplTest {
     @DisplayName("Should find 10 random words from txt file")
     void getTenRandomWordsFromDictionaryFileTest() throws Exception {
         //given
-        String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+        String filePath = "src/main/resources/dictionary/words_usa.txt";
         //when
         List<String> words = passwordServiceImpl.generateRandomWords(3);
         //then

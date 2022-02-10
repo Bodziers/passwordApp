@@ -22,11 +22,24 @@
         <label class="form-check-label" for="specialSignsCheck">Special signs</label>
       </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="wordsCheck" disabled/>
+        <input class="form-check-input" type="checkbox" value="" id="wordsCheck" formControlName="wordsCheck"
+               (change)="basicCollapse.toggle()"
+               aria-expanded="false"
+               aria-controls="collapseWordsNumber"/>
         <label class="form-check-label" for="wordsCheck">Words</label>
       </div>
+      <div class="mb-2" id="collapseWordsNumber" mdbCollapse #basicCollapse="mdbCollapse">
+        <mdb-form-control class="mt-2" >
+          <input mdbValidate mdbInput value=2 type="number" id="noOfWords" class="form-control"  formControlName="noOfWords" />
+          <label mdbLabel class="form-label" for="noOfWords">Number of words</label>
+          <mdb-error *ngIf="noOfWords?.invalid && (noOfWords?.dirty || noOfWords?.touched)">Number of word is required</mdb-error>
+          <mdb-success *ngIf="noOfWords?.valid && (noOfWords?.dirty || noOfWords?.touched)"></mdb-success>
+        </mdb-form-control>
+      </div>
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="allCheck" formControlName="allCheck"/>
+        <input class="form-check-input" type="checkbox" value="" id="allCheck"
+               (change)="basicCollapse.toggle()"
+               formControlName="allCheck"/>
         <label class="form-check-label" for="allCheck">Select all options</label>
       </div>
       <button type="submit" class="btn btn-primary mt-2">Generate passwords</button>
