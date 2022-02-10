@@ -20,71 +20,56 @@ class PasswordServiceImplTest {
         passwordServiceImpl = new PasswordServiceImpl();
     }
 
+
     @Test
-    @DisplayName("Should generate password with all symbols, digits and letters and desire number of chars")
-    void shouldGenerateRandomChartWithAllSymbolsTest() throws Exception {
+    @DisplayName("Should generate only letters as array of strings")
+    void shouldGenerateRandomLettersListAsStringArrayTest() throws Exception {
 
         //given
         int noOfDigits = 10;
         //when
-        String randomPassword = passwordServiceImpl.generateRandomChartWithAllSymbols(noOfDigits);
+        String[] randomLettersList = passwordServiceImpl.lettersList(noOfDigits);
         //then
-        assertEquals(noOfDigits, randomPassword.length());
-    }
-    @Test
-    @DisplayName("Should generate password with letters and desire number of chars")
-    void shouldGenerateRandomPasswordWithLettersTest() throws Exception {
-        //given
-        int noOfDigits = 10;
-        //when
-        String randomPassword = passwordServiceImpl.generateRandomLetters(noOfDigits);
-        //then
-        assertEquals(noOfDigits, randomPassword.length());
-    }
-
-
-    @Test
-    @DisplayName("Should generate password with digits and desire number of chars")
-    void shouldGenerateRandomPasswordWithDigitsTest() throws Exception {
-        //given
-        int noOfDigits = 10;
-        //when
-        String randomPassword = passwordServiceImpl.generateRandomDigits(noOfDigits);
-        //then
-        assertEquals(noOfDigits, randomPassword.length());
+        assertEquals(noOfDigits, randomLettersList.length);
     }
 
     @Test
-    @DisplayName("Should generate password with letters, digits and desire number of chars")
-    void shouldGenerateRandomPasswordWithDigitsAndLettersTest() throws Exception {
+    @DisplayName("Should generate only digits as array of strings")
+    void shouldGenerateRandomDigitsListAsStringArrayTest() throws Exception {
+
         //given
         int noOfDigits = 10;
         //when
-        String randomPassword = passwordServiceImpl.generateRandomLettersAndDigits(noOfDigits);
+        String[] randomDigitsList = passwordServiceImpl.digitsList(noOfDigits);
         //then
-        assertEquals(noOfDigits, randomPassword.length());
+        assertEquals(noOfDigits, randomDigitsList.length);
     }
 
     @Test
-    @DisplayName("Should generate password with letters, special signs with desire number of chars")
-    void shouldGenerateRandomPasswordWithLettersAndSpecialSignsTest() throws Exception {
+    @DisplayName("Should generate only special signs as array of strings")
+    void shouldGenerateRandomSpecialSignsListAsStringArrayTest() throws Exception {
+
         //given
         int noOfDigits = 10;
         //when
-        String randomPassword = passwordServiceImpl.generateRandomLettersWithSpecialChars(noOfDigits);
+        String[] randomSpecialSignsList = passwordServiceImpl.specialSignsList(noOfDigits);
         //then
-        assertEquals(noOfDigits, randomPassword.length());
+        assertEquals(noOfDigits, randomSpecialSignsList.length);
     }
     @Test
-    @DisplayName("Should generate password with digits, special signs with desire number of chars")
-    void shouldGenerateRandomPasswordWithDigitsAndSpecialSignsTest() throws Exception {
+    @DisplayName("Should generate words as array of strings")
+    void shouldGenerateRandomWordsListAsStringArrayTest() throws Exception {
+
         //given
-        int noOfDigits = 10;
+        int noOfWords = 10;
         //when
-        String randomPassword = passwordServiceImpl.generateRandomDigitsWithSpecialChars(noOfDigits);
+        List<String> randomSpecialSignsList = passwordServiceImpl.wordsList(noOfWords);
         //then
-        assertEquals(noOfDigits, randomPassword.length());
+        assertEquals(noOfWords, randomSpecialSignsList.size());
     }
+
+
+
 
     @Test
     @DisplayName("Should generate list with passwords")
@@ -93,10 +78,17 @@ class PasswordServiceImplTest {
         int sizeOfList = 10;
         int noOfDigits = 10;
         boolean letters = false;
-        boolean digits = false;
+        boolean digits = true;
         boolean specialSign = true;
+        boolean words = true;
+        int numberOfWords = 4;
         //when
-        List<Password> passwordsList= passwordServiceImpl.generateRandomPassword(noOfDigits,letters,digits,specialSign);
+        List<Password> passwordsList= passwordServiceImpl.generateRandomPassword(noOfDigits,
+                                                                                letters,
+                                                                                digits,
+                                                                                specialSign,
+                                                                                words,
+                                                                             numberOfWords);
         //then
         assertEquals(sizeOfList,passwordsList.size());
     }
@@ -132,11 +124,11 @@ class PasswordServiceImplTest {
 
     @Test
     @DisplayName("Should find random words from txt file")
-    void getRandomWordsFromDictionaryFileTest() throws Exception {
+    void getRandomWordsFromDictionaryFileNotNullTest() throws Exception {
         //given
         String filePath = "src/main/resources/static/dictionary/words_usa.txt";
         //when
-        List<Password> words = passwordServiceImpl.generateRandomWords(2);
+        List<String> words = passwordServiceImpl.generateRandomWords(2);
         //then
         assertNotNull(words);
     }
@@ -146,8 +138,8 @@ class PasswordServiceImplTest {
         //given
         String filePath = "src/main/resources/static/dictionary/words_usa.txt";
         //when
-        List<Password> words = passwordServiceImpl.generateRandomWords(10);
+        List<String> words = passwordServiceImpl.generateRandomWords(3);
         //then
-        assertEquals(10,words.size());
+        assertEquals(3,words.size());
     }
 }

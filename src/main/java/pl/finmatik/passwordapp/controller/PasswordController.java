@@ -19,17 +19,24 @@ public class PasswordController {
 
     @GetMapping("/password")
     public ResponseEntity<List<Password>> getPasswords (@RequestParam int chars,
-                                                      @RequestParam boolean letters,
-                                                      @RequestParam boolean digits,
-                                                      @RequestParam boolean specialsigns) {
+                                                        @RequestParam boolean letters,
+                                                        @RequestParam boolean digits,
+                                                        @RequestParam boolean specialsigns,
+                                                        @RequestParam  boolean words,
+                                                        @RequestParam int numberofwords) {
         List<Password> passwordList;
-        passwordList = passwordService.generateRandomPassword(chars, letters, digits, specialsigns);
+        passwordList = passwordService.generateRandomPassword(chars,
+                                                              letters,
+                                                              digits,
+                                                              specialsigns,
+                                                              words,
+                                                              numberofwords);
         return ResponseEntity.ok(passwordList);
     }
 
     @GetMapping("/word")
-    public ResponseEntity<List<Password>> getWords(@RequestParam int numberofwords) {
-        List<Password> passwordList;
+    public ResponseEntity<List<String>> getWords(@RequestParam int numberofwords) {
+        List<String> passwordList;
         passwordList = passwordService.generateRandomWords(numberofwords);
         return ResponseEntity.ok(passwordList);
     }

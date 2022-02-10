@@ -1,5 +1,6 @@
 package pl.finmatik.passwordapp.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import pl.finmatik.passwordapp.model.Password;
 
@@ -7,16 +8,16 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+
 
 @Service
 public class PasswordServiceImpl implements PasswordService {
 
-    private Random random;
-    //to check why this is necessary
-    {
+    private static Random random = new Random();
+
+    static {
         try {
             random = SecureRandom.getInstanceStrong();
         } catch (NoSuchAlgorithmException e) {
@@ -25,163 +26,96 @@ public class PasswordServiceImpl implements PasswordService {
     }
 
     @Override
-    public List<Password> generateRandomPassword(int noOfDigits, boolean letters, boolean digits, boolean specialSigns) {
+    public List<Password> generateRandomPassword(int noOfDigits,
+                                                 boolean letters,
+                                                 boolean digits,
+                                                 boolean specialSigns,
+                                                 boolean words,
+                                                 int numberOfWords) {
         if (noOfDigits < 0 || noOfDigits > 32) {
             throw new IllegalArgumentException("Number of digits must be between 1 and 32");
         } else {
 
             List<Password> passList = new ArrayList<>();
             String pass;
-            long id;
-
+            List<String> charactersList = new ArrayList<>();
+            //new password generation method
             for (int i = 1; i < 11; i++) {
-                id = i;
-                if (letters && digits && specialSigns) {
-                    pass = generateRandomChartWithAllSymbols(noOfDigits);
-                } else if (letters && digits && !specialSigns) {
-                    pass = generateRandomLettersAndDigits(noOfDigits);
-                } else if (letters && !digits && !specialSigns) {
-                    pass = generateRandomLetters(noOfDigits);
-                } else if (!letters && digits && !specialSigns) {
-                    pass = generateRandomDigits(noOfDigits);
-                } else if (letters && !digits && specialSigns) {
-                    pass = generateRandomLettersWithSpecialChars(noOfDigits);
-                } else if (!letters && digits && specialSigns) {
-                    pass = generateRandomDigitsWithSpecialChars(noOfDigits);
-                } else {
-                    pass = generateRandomChartWithAllSymbols(20);
+                if (digits) {
+                    charactersList.addAll(List.of(digitsList(noOfDigits)));
                 }
-                Password passwordObj = new Password();
-                passwordObj.setId(id);
-                passwordObj.setPassword(pass);
-                passList.add(passwordObj);
+                if (letters) {
+                    charactersList.addAll(List.of(lettersList(noOfDigits)));
+                }
+                if (specialSigns) {
+                    charactersList.addAll(List.of(specialSignsList(noOfDigits)));
+                }
+                Collections.shuffle(charactersList);
+                List<String> pipeline = charactersList.stream().limit(noOfDigits).collect(Collectors.toList());
+
+                if (words) {
+                    pipeline.addAll(wordsList(numberOfWords));
+                    Collections.shuffle(pipeline);
+                }
+                pass = pipeline.stream().map(Objects::toString).collect(Collectors.joining());
+                Password password = new Password ((long) i,pass);
+                passList.add(password);
             }
             return passList;
+
         }
     }
 
-
+    //new password methods to generate array of chars as string object
+    //this allows to connect needed arrays and randomize them
     @Override
-    public String generateRandomChartWithAllSymbols(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 1; i<=noOfDigits ; i++) {
-            //all ASCII char are from 33 to 125 but without 122
-            int randomNo = random.nextInt(125);
-            if (randomNo < 33 || randomNo == 122) {
-                i--;
-            } else {
-                //add char to string
-                password.append((char) randomNo);
-            }
-        }
-        return password.toString();
+    public String[] digitsList(int noOfDigits) {
+        String digitsString = RandomStringUtils.randomNumeric(noOfDigits);
+        return digitsString.codePoints()
+                .mapToObj(cp -> new String(Character.toChars(cp)))
+                .toArray(size -> new String[size]);
     }
 
     @Override
-    public String generateRandomDigits(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 1; i<=noOfDigits ; i++) {
-            //all asci digits chart are from 48 to 57
-            int randomNo = random.nextInt(57);
-            if (randomNo <48) {
-                i--;
-            } else {
-                password.append((char) randomNo);
-            }
-        }
-        return password.toString();
+    public String[] lettersList(int noOfDigits) {
+        String lettersString = RandomStringUtils.randomAlphabetic(noOfDigits);
+        return lettersString.codePoints()
+                .mapToObj(cp -> new String(Character.toChars(cp)))
+                .toArray(size -> new String[size]);
     }
 
     @Override
-    public String generateRandomLetters(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 1; i<=noOfDigits ; i++) {
-            //big letters from 65 to 90
-            //small letters 97 to 121
-            int randomNo = random.nextInt(121);
-            if (randomNo < 65 || (randomNo > 90 && randomNo <97)) {
-                i--;
-            } else {
-                password.append((char) randomNo);
-            }
-        }
-        return password.toString();
+    public String[] specialSignsList(int noOfDigits) {
+        char[] chars = { '!','@','#','$','%','^','&','*','(',')','{','}','[',']','?','>','<','.','/','\\'};
+        String specialSignsString = RandomStringUtils.random(noOfDigits,
+                0,chars.length,false,false,chars);
+        return specialSignsString.codePoints()
+                .mapToObj(cp -> new String(Character.toChars(cp)))
+                .toArray(size -> new String[size]);
     }
 
-    @Override
-    public String generateRandomLettersAndDigits(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-
-        for (int i = 1; i<=noOfDigits ; i++) {
-            //big letters from 65 to 90
-            //small letters 97 to 121
-            //all asci digits chart are from 48 to 57
-            int randomNo = random.nextInt(121);
-            if (randomNo < 48) {
-                i--;
-            } else if (randomNo > 57 && randomNo < 65) {
-                i--;
-            } else if (randomNo > 90 && randomNo < 97) {
-                i--;
-            } else {
-                password.append((char) randomNo);
-            }
-        }
-        return password.toString();
-    }
-
-    @Override
-    public String generateRandomLettersWithSpecialChars(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-        //big letters from 65 to 90
-        //small letters 97 to 121
-        //all ASCII special char are from 33 to 47 and 58 to 64 and 91 to 96 and 123 to 125
-        for (int i = 1; i <= noOfDigits; i++) {
-
-            int randomNo = random.nextInt(125);
-            if (randomNo < 33) {
-                i--;
-            } else if ((randomNo > 47 && randomNo < 58) || randomNo == 122) {
-                i--;
-            } else {
-                {
-                    //add char to string
-                    password.append((char) randomNo);
+    public List<String> wordsList(int noOfWords) {
+        List<String> words = new ArrayList<>();
+        for (int i=1; i<=noOfWords; i++){
+            try {
+                String filePath = "src/main/resources/static/dictionary/words_usa.txt";
+                long randomNo;
+                try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
+                    file.length();
+                    randomNo = random.nextLong(file.length());
                 }
+                String word = readLineFromFile(filePath, randomNo);
+                words.add(word);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        return password.toString();
+        return words;
     }
 
-    @Override
-    public String generateRandomDigitsWithSpecialChars(int noOfDigits) {
-        StringBuilder password = new StringBuilder();
-        //all asci digits chart are from 48 to 57
-        //all ASCII special char are from 33 to 47 and 58 to 64 and 91 to 96 and 123 to 125
-        for (int i = 1; i <= noOfDigits; i++) {
-
-            int randomNo = random.nextInt(125);
-            if (randomNo < 48) {
-                i--;
-            } else if (randomNo > 64 && randomNo < 91) {
-                i--;
-            } else if (randomNo > 96 && randomNo < 122) {
-                i--;
-            } else {
-                {
-                    //add char to string
-                    password.append((char) randomNo);
-                }
-            }
-        }
-        return password.toString();
-    }
 
     @Override
-    public List<Password> generateRandomWords(int noOfWords) {
+    public List<String> generateRandomWords(int noOfWords) {
 
          /*  1. random line (77722 lines in words_us)
          * 2. query random line
@@ -194,7 +128,7 @@ public class PasswordServiceImpl implements PasswordService {
          */
 
         //should i use already made object password? or create words - same variables?
-        List<Password> words = new ArrayList<>();
+        List<String> words = new ArrayList<>();
 
         for (int i=1; i<=noOfWords; i++){
             try {
@@ -204,8 +138,7 @@ public class PasswordServiceImpl implements PasswordService {
                     file.length();
                     randomNo = random.nextLong(file.length());
                 }
-                Password word = new Password(((long) i), readLineFromFile(filePath, randomNo));
-                words.add(word);
+                words.add(readLineFromFile(filePath, randomNo));
             } catch (IOException e) {
                 e.printStackTrace();
             }
